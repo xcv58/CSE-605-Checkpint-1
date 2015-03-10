@@ -33,7 +33,7 @@
 
 * Intents/Intent Filters
 ** Single Process
-   X, one process doesn't make sense?
+   No, one process doesn't make sense?
 
 ** Multiple Processes
    We can use process(es) to generate bunch of intents, then use other
@@ -68,5 +68,15 @@
     to evaluate scheduler and intent delivery mechanism.
 
 * TODO Content Providers
+
 * TODO Processes/Threads
-* TODO Parcelable/Serializable
+
+* Parcelable/Serializable
+  According to this [[http://www.developerphil.com/parcelable-vs-serializable/][blog]], parcelable mechanism have 10 times better performance than serializable mechanism.
+  But parcelable need developers to implement writeToParcel and createFromParcel manually.
+  So parcelable can save the overhead to iterate all fields of object.
+  But we can compare the two mechanisms by how much pressure they generate to garbage collector.
+
+  The approach is to pass same amount of objects from one process to another process (either the same process or alien),
+  then we compare the different behaviors of garbage collector.
+  It's possible to evaluate scheduler as well.

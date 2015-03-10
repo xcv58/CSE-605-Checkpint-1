@@ -1,4 +1,4 @@
-% Created 2015-03-10 Tue 14:58
+% Created 2015-03-10 Tue 18:33
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -69,7 +69,7 @@ They're both our targets and mechanisms to use.
 \label{sec-3}
 \subsection{Single Process}
 \label{sec-3-1}
-X, one process doesn't make sense?
+No, one process doesn't make sense?
 
 \subsection{Multiple Processes}
 \label{sec-3-2}
@@ -114,9 +114,19 @@ to evaluate scheduler and intent delivery mechanism.
 
 \section{{\bfseries\sffamily TODO} Content Providers}
 \label{sec-4}
+
 \section{{\bfseries\sffamily TODO} Processes/Threads}
 \label{sec-5}
-\section{{\bfseries\sffamily TODO} Parcelable/Serializable}
+
+\section{Parcelable/Serializable}
 \label{sec-6}
+According to this \href{http://www.developerphil.com/parcelable-vs-serializable/}{blog}, parcelable mechanism have 10 times better performance than serializable mechanism.
+But parcelable need developers to implement writeToParcel and createFromParcel manually.
+So parcelable can save the overhead to iterate all fields of object.
+But we can compare the two mechanisms by how much pressure they generate to garbage collector.
+
+The approach is to pass same amount of objects from one process to another process (either the same process or alien),
+then we compare the different behaviors of garbage collector.
+It's possible to evaluate scheduler as well.
 % Emacs 25.0.50.16 (Org mode 8.2.10)
 \end{document}
