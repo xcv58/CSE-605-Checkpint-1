@@ -69,4 +69,4 @@
 
 * TODO Content Providers
 * TODO Processes/Threads
-* Parcelable/Serializable
+* TODO Parcelable/Serializable
