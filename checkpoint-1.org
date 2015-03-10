@@ -1,0 +1,73 @@
+#+TITLE: CSE-605 Checkpoint 1
+#+AUTHOR: Rex
+#+LATEX_HEADER: \usepackage{fullpage}
+
+* Introduction
+  We will measure the predictability of Android.
+  How far ordinary Android system between Real-time system.
+
+* Android Components
+  - Intents and Intent Filters
+    We will evaluate intent delivery mechanism of Android.
+    The intents will appear for almost all multiple processes experiments.
+
+  - Activities
+  - App Widgets
+
+    We will not directly evaluate activities and app widgets because they're only related with UI,
+    it's hard to produce convincible result because there're too many elements out of control,
+    like the GPU power, the screen resolution.
+
+  - Services
+
+    We will not directly evalute services as well. The reason is same as activities.
+  - Content Providers
+
+    We will evalute content providers related *Garbage Collector*, *Synchronization*,
+    and *Scheduler*. Because it's shared data mechanism Android provied.
+
+
+  - Processes and Threads
+    We will evaluate processes and threads directly.
+    They're both our targets and mechanisms to use.
+
+* Intents/Intent Filters
+** Single Process
+   X, one process doesn't make sense?
+
+** Multiple Processes
+   We can use process(es) to generate bunch of intents, then use other
+   process(es) to receive the intents.
+   So we can evaluate the order and time of intent delivery.
+   It can provide some pressure for *Garbage Collector*, *Synchronization*, and *Scheduler*.
+
+*** Garbage Collector
+    We can use one sender and one receiver to test Garbage Collector,
+    we can associate different size objects with intents.
+    Then the receiver decide how to release those objects.
+    So we can evaluate how garbage collector works:
+    - frequency of grabage collection and memory pressure
+    - running time of grabage collection and memory pressure
+
+    The memory pressure should contains different types:
+    |                 | big objects | medium objects | small objects |
+    |-----------------+-------------+----------------+---------------|
+    | /               | <           |                |               |
+    | long live time  |             |                |               |
+    | short live time |             |                |               |
+
+*** Synchronization
+    This may need other Android components.
+    Because we can not pass an object as extra of an intent, we need serialize the object first.
+    So there no directly synchronized mechanism between intent and receiver,
+    but we can pass some meta data to let receivers use something need synchronization like *Content Provider*.
+
+*** Scheduler
+    We can use multiple processes to generate intents for multiple receivers.
+    So the scheduler will get pressure, then we use the order of intent delivery
+    to evaluate scheduler and intent delivery mechanism.
+
+* Services/Recivers/
+* Content Providers
+* Processes/Threads
+* Parcelable/Serializable
