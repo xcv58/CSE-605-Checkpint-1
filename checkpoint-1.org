@@ -2,11 +2,11 @@
 #+AUTHOR: Rex
 #+LATEX_HEADER: \usepackage{fullpage}
 
-* Introduction
+* TODO Introduction
   We will measure the predictability of Android.
   How far ordinary Android system between Real-time system.
 
-* Android Components
+* TODO Android Components
   - Intents and Intent Filters
     We will evaluate intent delivery mechanism of Android.
     The intents will appear for almost all multiple processes experiments.
@@ -67,7 +67,6 @@
     So the scheduler will get pressure, then we use the order of intent delivery
     to evaluate scheduler and intent delivery mechanism.
 
-* Services/Recivers/
-* Content Providers
-* Processes/Threads
+* TODO Content Providers
+* TODO Processes/Threads
 * Parcelable/Serializable
