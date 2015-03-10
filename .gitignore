@@ -2,8 +2,6 @@
 *~
 \#*
 auto/
-*.pdf
-*.tex
 *.aux
 *.fdb_latexmk
 *.fls

@@ -1,0 +1,122 @@
+% Created 2015-03-10 Tue 14:45
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\usepackage{fullpage}
+\author{Rex}
+\date{\today}
+\title{CSE-605 Checkpoint 1}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 25.0.50.16 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{{\bfseries\sffamily TODO} Introduction}
+\label{sec-1}
+We will measure the predictability of Android.
+How far ordinary Android system between Real-time system.
+
+\section{{\bfseries\sffamily TODO} Android Components}
+\label{sec-2}
+\begin{itemize}
+\item Intents and Intent Filters
+We will evaluate intent delivery mechanism of Android.
+The intents will appear for almost all multiple processes experiments.
+
+\item Activities
+\item App Widgets
+
+We will not directly evaluate activities and app widgets because they're only related with UI,
+it's hard to produce convincible result because there're too many elements out of control,
+like the GPU power, the screen resolution.
+
+\item Services
+
+We will not directly evalute services as well. The reason is same as activities.
+\item Content Providers
+
+We will evalute content providers related \textbf{Garbage Collector}, \textbf{Synchronization},
+and \textbf{Scheduler}. Because it's shared data mechanism Android provied.
+\end{itemize}
+
+
+\begin{itemize}
+\item Processes and Threads
+We will evaluate processes and threads directly.
+They're both our targets and mechanisms to use.
+\end{itemize}
+
+\section{Intents/Intent Filters}
+\label{sec-3}
+\subsection{Single Process}
+\label{sec-3-1}
+X, one process doesn't make sense?
+
+\subsection{Multiple Processes}
+\label{sec-3-2}
+We can use process(es) to generate bunch of intents, then use other
+process(es) to receive the intents.
+So we can evaluate the order and time of intent delivery.
+It can provide some pressure for \textbf{Garbage Collector}, \textbf{Synchronization}, and \textbf{Scheduler}.
+
+\subsubsection{Garbage Collector}
+\label{sec-3-2-1}
+We can use one sender and one receiver to test Garbage Collector,
+we can associate different size objects with intents.
+Then the receiver decide how to release those objects.
+So we can evaluate how garbage collector works:
+\begin{itemize}
+\item frequency of grabage collection and memory pressure
+\item running time of grabage collection and memory pressure
+\end{itemize}
+
+The memory pressure should contains different types:
+\begin{center}
+\begin{tabular}{l|lll}
+ & big objects & medium objects & small objects\\
+\hline
+long live time &  &  & \\
+short live time &  &  & \\
+\end{tabular}
+\end{center}
+
+\subsubsection{Synchronization}
+\label{sec-3-2-2}
+This may need other Android components.
+Because we can not pass an object as extra of an intent, we need serialize the object first.
+So there no directly synchronized mechanism between intent and receiver,
+but we can pass some meta data to let receivers use something need synchronization like \textbf{Content Provider}.
+
+\subsubsection{Scheduler}
+\label{sec-3-2-3}
+We can use multiple processes to generate intents for multiple receivers.
+So the scheduler will get pressure, then we use the order of intent delivery
+to evaluate scheduler and intent delivery mechanism.
+
+\section{{\bfseries\sffamily TODO} Content Providers}
+\label{sec-4}
+\section{{\bfseries\sffamily TODO} Processes/Threads}
+\label{sec-5}
+\section{Parcelable/Serializable}
+\label{sec-6}
+% Emacs 25.0.50.16 (Org mode 8.2.10)
+\end{document}
