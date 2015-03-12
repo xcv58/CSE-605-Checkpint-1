@@ -1,4 +1,4 @@
-% Created 2015-03-10 Tue 18:33
+% Created 2015-03-12 Thu 14:46
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -23,7 +23,7 @@
 \hypersetup{
   pdfkeywords={},
   pdfsubject={},
-  pdfcreator={Emacs 25.0.50.16 (Org mode 8.2.10)}}
+  pdfcreator={Emacs 25.0.50.18 (Org mode 8.2.10)}}
 \begin{document}
 
 \maketitle
@@ -65,61 +65,92 @@ We will evaluate processes and threads directly.
 They're both our targets and mechanisms to use.
 \end{itemize}
 
-\section{Intents/Intent Filters}
+\section{Intents/Receivers}
 \label{sec-3}
 \subsection{Single Process}
 \label{sec-3-1}
-No, one process doesn't make sense?
+To directly evaluate intents and receivers on
+single process deosn't make sense.
+But this can provide \textbf{baseline for our experiments}.
+We can compare the results of same experiment on single process
+and multiple processes.
+Then we can get reasoning of different behaviour.
 
 \subsection{Multiple Processes}
 \label{sec-3-2}
 We can use process(es) to generate bunch of intents, then use other
 process(es) to receive the intents.
+In addition, there're background process(es) with some computation
+to produce pressure for Android system.
 So we can evaluate the order and time of intent delivery.
 It can provide some pressure for \textbf{Garbage Collector}, \textbf{Synchronization}, and \textbf{Scheduler}.
 
 \subsubsection{Garbage Collector}
 \label{sec-3-2-1}
 We can use one sender and one receiver to test Garbage Collector,
-we can associate different size objects with intents.
-Then the receiver decide how to release those objects.
 So we can evaluate how garbage collector works:
 \begin{itemize}
 \item frequency of grabage collection and memory pressure
 \item running time of grabage collection and memory pressure
 \end{itemize}
 
-The memory pressure should contains different types:
+The memory pressure should contains different types\label{Memory-Pressure-Types}:
 \begin{center}
 \begin{tabular}{l|lll}
  & big objects & medium objects & small objects\\
 \hline
-long live time &  &  & \\
-short live time &  &  & \\
+long live time & x & x & x\\
+short live time & x & x & x\\
 \end{tabular}
 \end{center}
 
+So where pressure come from?
+
+To evalute the behavior of Android system, it need some pressure for
+different components. So that we can infer the predictability of different
+conponents, and the interaction between different components.
+The pressure can come from:
+
+\begin{itemize}
+\item Other background process(es) with computation
+\item Computation inside senders
+\item Computation inside receivers
+\end{itemize}
+
+We will divide our experiments into three phases.
+
+Phase 1. we only have pressure from background process(es).
+It's easier to implement and tune for different \texttt{Memory Pressure Types}.
+
+Phase 2. we'll add additional computation to senders and receivers to compare
+whether computation source affect Android's performance.
+
+Phase 3. we combined the different pressure together to get final evaluation.
+
 \subsubsection{Synchronization}
 \label{sec-3-2-2}
-This may need other Android components.
+This task need other Android components.
 Because we can not pass an object as extra of an intent, we need serialize the object first.
-So there no directly synchronized mechanism between intent and receiver,
-but we can pass some meta data to let receivers use something need synchronization like \textbf{Content Provider}.
+So there no directly synchronized mechanism between sender and receiver,
+but we can pass some metadata to let receivers use something need synchronization like \textbf{Content Provider}. We'll discuss in next section.
 
 \subsubsection{Scheduler}
 \label{sec-3-2-3}
-We can use multiple processes to generate intents for multiple receivers.
-So the scheduler will get pressure, then we use the order of intent delivery
-to evaluate scheduler and intent delivery mechanism.
+We can use multiple background processes to provide pressure for scheduler.
+Then we use the order of intent delivery to evaluate scheduler and intent delivery mechanism. More details can be found in Section \hyperref[Processes/Threads]{Processes/Threads}.
 
 \section{{\bfseries\sffamily TODO} Content Providers}
 \label{sec-4}
 
-\section{{\bfseries\sffamily TODO} Processes/Threads}
+\section{{\bfseries\sffamily TODO} \label{Processes/Threads}Processes/Threads}
 \label{sec-5}
 
-\section{Parcelable/Serializable}
+\section{{\bfseries\sffamily TODO} AlarmManager}
 \label{sec-6}
+It's a critical factor for real-time system.
+
+\section{Parcelable/Serializable}
+\label{sec-7}
 According to this \href{http://www.developerphil.com/parcelable-vs-serializable/}{blog}, parcelable mechanism have 10 times better performance than serializable mechanism.
 But parcelable need developers to implement writeToParcel and createFromParcel manually.
 So parcelable can save the overhead to iterate all fields of object.
@@ -128,5 +159,5 @@ But we can compare the two mechanisms by how much pressure they generate to garb
 The approach is to pass same amount of objects from one process to another process (either the same process or alien),
 then we compare the different behaviors of garbage collector.
 It's possible to evaluate scheduler as well.
-% Emacs 25.0.50.16 (Org mode 8.2.10)
+% Emacs 25.0.50.18 (Org mode 8.2.10)
 \end{document}
