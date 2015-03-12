@@ -1,8 +1,7 @@
 #+TITLE: Empirical assessment of the real-time capabilities of Android\\\large CSE-605 Checkpoint 1 - Rex
 #+AUTHOR: Xia Wu\\ [[xiawu@buffalo.edu]] \and Xingxiao Yuan\\ [[xingxiao@buffalo.edu]] \and Michael Wehar\\ [[mwehar@buffalo.edu]] \and Yihong Chen\\ [[ychen78@buffalo.edu]]
 
-
-
+#+LATEX_HEADER: \usepackage{fullpage}
 #+LATEX_HEADER: \usepackage{fullpage}
 
 * TODO Introduction
@@ -10,12 +9,12 @@
   How far ordinary Android system between Real-time system.
 
 * TODO Android Components
-  - Intents and Intent Filters
+  - Intents and Intent Filters (receivers)
+
     We will evaluate intent delivery mechanism of Android.
     The intents will appear for almost all multiple processes experiments.
 
-  - Activities
-  - App Widgets
+  - Activities and App Widgets
 
     We will not directly evaluate activities and app widgets because they're only related with UI,
     it's hard to produce convincible result because there're too many elements out of control,
@@ -31,6 +30,7 @@
 
 
   - Processes and Threads
+
     We will evaluate processes and threads directly.
     They're both our targets and mechanisms to use.
 
@@ -46,7 +46,7 @@
 ** Multiple Processes
    We can use process(es) to generate bunch of intents, then use other
    process(es) to receive the intents.
-   In addition, there're background process(es) with some computation
+   In addition, there're always background process(es) with some computation
    to produce pressure for Android system.
    So we can evaluate the order and time of intent delivery.
    It can provide some pressure for *Garbage Collector*, *Synchronization*, and *Scheduler*.
@@ -57,7 +57,7 @@
     - frequency of grabage collection and memory pressure
     - running time of grabage collection and memory pressure
 
-    The memory pressure should contains different types<<Memory Pressure Types>>:
+    The memory pressure should contains different <<Memory Pressure Types>>types:
     |                 | big objects | medium objects | small objects |
     |-----------------+-------------+----------------+---------------|
     | /               | <           |                |               |
@@ -65,7 +65,6 @@
     | short live time | x           | x              | x             |
 
     So where pressure come from?
-
     To evalute the behavior of Android system, it need some pressure for
     different components. So that we can infer the predictability of different
     conponents, and the interaction between different components.
@@ -75,15 +74,18 @@
     - Computation inside senders
     - Computation inside receivers
 
-    We will divide our experiments into three phases.
+    We will divide our experiments into three phases:
 
     Phase 1. we only have pressure from background process(es).
-    It's easier to implement and tune for different [[memory pressure types][Memory Pressure Types]].
+    It's easier to implement and tune for different [[Memory Pressure Types][memory pressure types]].
 
     Phase 2. we'll add additional computation to senders and receivers to compare
     whether computation source affect Android's performance.
 
     Phase 3. we combined the different pressure together to get final evaluation.
+
+    The computation can be the task from SPECjvm2008 (Java Virtual Machine Benchmark) or DaCapo Benchmark.
+    In addition, we can assoicate the [[Parcelable/Serializable][Parcelable vs. Serializable]] with experiment phase 3.
 
 *** Synchronization
     This task need other Android components.
@@ -102,7 +104,7 @@
 * TODO AlarmManager
   It's a critical factor for real-time system.
 
-* Parcelable/Serializable
+* TODO <<Parcelable/Serializable>>Parcelable/Serializable
   According to this [[http://www.developerphil.com/parcelable-vs-serializable/][blog]], parcelable mechanism have 10 times better performance than serializable mechanism.
   But parcelable need developers to implement writeToParcel and createFromParcel manually.
   So parcelable can save the overhead to iterate all fields of object.

@@ -1,4 +1,4 @@
-% Created 2015-03-12 Thu 15:12
+% Created 2015-03-12 Thu 15:39
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -16,6 +16,7 @@
 \usepackage{amssymb}
 \usepackage{hyperref}
 \tolerance=1000
+\usepackage{fullpage}
 \usepackage{fullpage}
 \author{Xia Wu\\ \texttt{xiawu@buffalo.edu} \and Xingxiao Yuan\\ \texttt{xingxiao@buffalo.edu} \and Michael Wehar\\ \texttt{mwehar@buffalo.edu} \and Yihong Chen\\ \texttt{ychen78@buffalo.edu}}
 \date{\today}
@@ -38,12 +39,12 @@ How far ordinary Android system between Real-time system.
 \section{{\bfseries\sffamily TODO} Android Components}
 \label{sec-2}
 \begin{itemize}
-\item Intents and Intent Filters
+\item Intents and Intent Filters (receivers)
+
 We will evaluate intent delivery mechanism of Android.
 The intents will appear for almost all multiple processes experiments.
 
-\item Activities
-\item App Widgets
+\item Activities and App Widgets
 
 We will not directly evaluate activities and app widgets because they're only related with UI,
 it's hard to produce convincible result because there're too many elements out of control,
@@ -61,6 +62,7 @@ and \textbf{Scheduler}. Because it's shared data mechanism Android provied.
 
 \begin{itemize}
 \item Processes and Threads
+
 We will evaluate processes and threads directly.
 They're both our targets and mechanisms to use.
 \end{itemize}
@@ -80,7 +82,7 @@ Then we can get reasoning of different behaviour.
 \label{sec-3-2}
 We can use process(es) to generate bunch of intents, then use other
 process(es) to receive the intents.
-In addition, there're background process(es) with some computation
+In addition, there're always background process(es) with some computation
 to produce pressure for Android system.
 So we can evaluate the order and time of intent delivery.
 It can provide some pressure for \textbf{Garbage Collector}, \textbf{Synchronization}, and \textbf{Scheduler}.
@@ -94,7 +96,7 @@ So we can evaluate how garbage collector works:
 \item running time of grabage collection and memory pressure
 \end{itemize}
 
-The memory pressure should contains different types\label{Memory-Pressure-Types}:
+The memory pressure should contains different \label{Memory-Pressure-Types}types:
 \begin{center}
 \begin{tabular}{l|lll}
  & big objects & medium objects & small objects\\
@@ -105,7 +107,6 @@ short live time & x & x & x\\
 \end{center}
 
 So where pressure come from?
-
 To evalute the behavior of Android system, it need some pressure for
 different components. So that we can infer the predictability of different
 conponents, and the interaction between different components.
@@ -117,15 +118,18 @@ The pressure can come from:
 \item Computation inside receivers
 \end{itemize}
 
-We will divide our experiments into three phases.
+We will divide our experiments into three phases:
 
 Phase 1. we only have pressure from background process(es).
-It's easier to implement and tune for different \texttt{Memory Pressure Types}.
+It's easier to implement and tune for different \hyperref[Memory-Pressure-Types]{memory pressure types}.
 
 Phase 2. we'll add additional computation to senders and receivers to compare
 whether computation source affect Android's performance.
 
 Phase 3. we combined the different pressure together to get final evaluation.
+
+The computation can be the task from SPECjvm2008 (Java Virtual Machine Benchmark) or DaCapo Benchmark.
+In addition, we can assoicate the \hyperref[Parcelable/Serializable]{Parcelable vs. Serializable} with experiment phase 3.
 
 \subsubsection{Synchronization}
 \label{sec-3-2-2}
@@ -149,7 +153,7 @@ Then we use the order of intent delivery to evaluate scheduler and intent delive
 \label{sec-6}
 It's a critical factor for real-time system.
 
-\section{Parcelable/Serializable}
+\section{{\bfseries\sffamily TODO} \label{Parcelable/Serializable}Parcelable/Serializable}
 \label{sec-7}
 According to this \href{http://www.developerphil.com/parcelable-vs-serializable/}{blog}, parcelable mechanism have 10 times better performance than serializable mechanism.
 But parcelable need developers to implement writeToParcel and createFromParcel manually.
