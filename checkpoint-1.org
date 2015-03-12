@@ -98,13 +98,14 @@
     Then we use the order of intent delivery to evaluate scheduler and intent delivery mechanism. More details can be found in Section [[Processes/Threads][Processes/Threads]].
 
 * TODO Content Providers
+  Need focus on synchronization
 
 * TODO <<Processes/Threads>>Processes/Threads
 
 * TODO AlarmManager
   It's a critical factor for real-time system.
 
-* TODO <<Parcelable/Serializable>>Parcelable/Serializable
+* DONE <<Parcelable/Serializable>>Parcelable/Serializable
   According to this [[http://www.developerphil.com/parcelable-vs-serializable/][blog]], parcelable mechanism have 10 times better performance than serializable mechanism.
   But parcelable need developers to implement writeToParcel and createFromParcel manually.
   So parcelable can save the overhead to iterate all fields of object.
@@ -113,3 +114,7 @@
   The approach is to pass same amount of objects from one process to another process (either the same process or alien),
   then we compare the different behaviors of garbage collector.
   It's possible to evaluate scheduler as well.
+
+  In conclude, the parcelable and serializable mechanisms are methods to provide pressure for Android system.
+  In the meantime, we can evalute the performance of them.
+  The result may improve static code analysis of Andorid codes.
