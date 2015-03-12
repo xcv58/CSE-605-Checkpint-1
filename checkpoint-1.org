@@ -1,5 +1,8 @@
-#+TITLE: CSE-605 Checkpoint 1
-#+AUTHOR: Rex
+#+TITLE: Empirical assessment of the real-time capabilities of Android\\\large CSE-605 Checkpoint 1 - Rex
+#+AUTHOR: Xia Wu\\ [[xiawu@buffalo.edu]] \and Xingxiao Yuan\\ [[xingxiao@buffalo.edu]] \and Michael Wehar\\ [[mwehar@buffalo.edu]] \and Yihong Chen\\ [[ychen78@buffalo.edu]]
+
+
+
 #+LATEX_HEADER: \usepackage{fullpage}
 
 * TODO Introduction
