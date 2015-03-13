@@ -100,15 +100,54 @@
     We can use multiple background processes to provide pressure for scheduler.
     Then we use the order of intent delivery to evaluate scheduler and intent delivery mechanism. More details can be found in Section [[Processes/Threads][Processes/Threads]].
 
-* TODO Content Providers
-  Need focus on synchronization
+* Content Providers
+  Content provider is an Android system's mechanism to manage access to a central repository of data.
+  But Android system does not synchronize access to the Content Provider.
+  So we must implement thread-safe for accessing content providers.
+  One way is using synchronized. We will figure out whether there exist other synchronization mechanism.
+
+  But it provides use cases to test synchronization in Android. We can use different processes to access one content provider.
+  Then we can evaluate the performance of synchronization in Android.
+
+  The experiments should contains *single process* as baseline and *multiple processes*.
+  Every process access the content provider for a fixed times with a fixed interval, then record the finish time.
+  We can gradually increase the number of processes to compare the results.
+
+  So our experiments should have such configurable elements:
+
+|   | Process Number                        | Times to Access Content Provider | Interval |
+|---+---------------------------------------+----------------------------------+----------|
+| / |                                       | <                                | <        |
+|   | How many processes run simultaneously | The fixed num                    | Interval |
+
+  Apparently, we can evaluate the scheduler in the meantime.
+  For example, how many processes can run without lots of them missing deadline.
 
 * TODO <<Processes/Threads>>Processes/Threads
 
-* TODO AlarmManager
-  It's a critical factor for real-time system.
+* AlarmManager and Handler
+  There're two ways to schedule something in Android:
 
-* DONE <<Parcelable/Serializable>>Parcelable/Serializable
+  - AlarmManager
+  - Handler
+
+  Don't miss deadline for certain task is a critical factor for real-time system.
+  So we'll evalute the two approaches respectively.
+  But because the functionality is same.
+  So we call them scheduled tasks.
+  To evaluate how well Android handle scheduled tasks.
+  We can create lots of threads/processes with light computation run simultaneously,
+  then to evalute how many times they miss deadline.
+
+  Based on the two hypotheses:
+  - the number of threads/processes affect performance of scheduler
+  - the workload for each tasks affect performance of scheduler
+
+  We configure our experiments as follows:
+  1. only use light workload for lots of threads/processes
+  2. use configurable workload for fixed number of threads/processes to evalute how workload affect scheduler
+
+* <<Parcelable/Serializable>>Parcelable/Serializable
   According to this [[http://www.developerphil.com/parcelable-vs-serializable/][blog]], parcelable mechanism have 10 times better performance than serializable mechanism.
   But parcelable need developers to implement writeToParcel and createFromParcel manually.
   So parcelable can save the overhead to iterate all fields of object.
