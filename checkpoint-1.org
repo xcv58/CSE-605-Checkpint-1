@@ -123,7 +123,32 @@
   Apparently, we can evaluate the scheduler in the meantime.
   For example, how many processes can run without lots of them missing deadline.
 
-* TODO <<Processes/Threads>>Processes/Threads
+* <<Processes/Threads>>Processes/Threads
+  As we move forward with our project, we will be concerned with computational limitations in regards to memory, threads, and processes.  We would especially like to understand how the Android system responds and performs as we approach the limits and obtain comprehensive data on this performance.  Before discussing the benchmarks that we will be running to obtain this data, we have to explore some basic information on how the Android System manages processes and threads.
+
+  There is some Android specific behaviour related to processes and threads.  For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts back up when the user is again interacting with the component.
+
+  As a result, processes will be killed according to the following rules.
+
+  - Foreground processes are only killed as a last resort.
+  - Any process that affects what the user is currently seeing will generally not be killed as well.
+  - Service processes may be killed if necessary.
+  - Background and empty processes are often killed first.
+
+  A thread is launched when an application starts.  This thread is often called the UI thread (or the main thread).  All components within that app will be instantiated within the UI thread.  Applications are vulnerable to performance issues when large computations are a result of user interaction because the application’s UI thread will take on the task of handling these computations rather than handle simple UI tasks for a smooth user experience.  In response to this vulnerability, Android has two principles to protect the user experience.  Don’t assign too much work to the UI thread and don’t let other threads update the UI.  So to handle large computations as a result of user interaction one should spawn off worker threads.
+
+  In our project, we won’t be too concerned with the application life cycle, the UI thread, components, and app related services.  We will be more concerned with worker threads and computation done below the UI and service level.  Since worker threads are often killed as a result of runtime configuration changes that result from user interactions, we will need to fix our runtime configuration and execute our application in a fixed environment where user interaction is limited or none.
+
+  Now, we are ready to discuss the benchmarks that we will be testing in Android.  We were able to find some data on thread density for the the Dacapo benchmarks.  From this data, it appears that the benchmarks avrora_9, hsqldb_6, lusearch_6, and eclispe_9 all spawn off a lot of threads and will provide us with interesting and valuable data.
+
+  - avrora simulates the evaluation of programs on a grid of microcontrollers
+  - hsqldb has been replaced by h2 which simulates a model of banking with many transactions
+  - lusearch searches for keywords among a collection of large texts
+  - eclipse runs peformance tests related to the Eclipse IDE
+
+  Also, we will investigate thread usage for the SPEC benchmarks such as compiler, compress, and crypto.  We’ve found some relevant data on the 2015 SPECjvm2008 SPEC Summary Report.
+
+  In addition to these benchmarks, if we decide to further explore Android Services and Android thread management at a higher level, then we will look into bound services and interprocessor communication using remote procedure calls.
 
 * AlarmManager and Handler
   There're two ways to schedule something in Android:
