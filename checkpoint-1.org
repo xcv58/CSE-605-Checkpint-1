@@ -102,17 +102,17 @@
     And next, we will use the order of the intent delivery to evaluate the scheduler and intent delivery mechanism. More on this topic is discussed in Section [[Processes/Threads][Processes/Threads]].
 
 * Content Provider
-  Content provider is an Android system's mechanism to manage access to a central repository of data.
-  However, Android system does not synchronize access to the Content Provider.
-  So we must implement in a thread-safe way for accessing content providers.
-  One method is to use synchronization. Normally, We are able to figure out whether or not there exists other synchronization mechanism.
+  Content provider is an Android system's mechanism that manages access to a central repository of data,
+  but Android system does not synchronize access to the Content Provider.
+  So we must implement a thread-safe procedure for accessing content providers.
+  One way of doing this is to use synchronization. Normally, We are able to figure out whether or not there exists other synchronization mechanism.
 
   But Android provides use cases to test synchronization. We can use different processes to access one content provider.
-  Then we can evaluate the performance of synchronization in Android.
+  Then, we can evaluate the performance of synchronization in Android.
 
-  The experiments should contains *single process* as baseline and *multiple processes*.
-  Every process accesses the content provider for a fixed times with a fixed interval, then the finish time is recorde.
-  We plan to gradually increase the number of processes to compare the results
+  The experiments should contain *single process* as baseline and *multiple processes* on the top.
+  Every process accesses the content provider for a fixed time and a fixed interval, then the finish time is recorded.
+  We plan to gradually increase the number of processes and then compare the results.
 
   So our experiments should have such configurable elements as following:
 
