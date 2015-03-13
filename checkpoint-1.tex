@@ -1,4 +1,4 @@
-% Created 2015-03-13 Fri 17:58
+% Created 2015-03-13 Fri 18:53
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -55,12 +55,11 @@ e.g. the GPU power and the screen resolution.
 
 \item Services
 
-We will not directly evalute Services as well. The reason is the same as we cannot do with Activities.
+We will not directly evalute Services as well. The reason is the same as why we cannot directly evaluate Activities.
 
 \item Content Providers
 
-We will evalute the Content Providers that are related to \textbf{Garbage Collector}, \textbf{Synchronization},
-and \textbf{Scheduler}, because it's the shared data mechanism that Android provides.
+We will evaluate the \textbf{Garbage Collector}, \textbf{Synchronization}, and \textbf{Scheduler} by means of the Content Provider, because we can make use of the shared data mechanism that Android provides.
 \end{itemize}
 
 
@@ -68,7 +67,7 @@ and \textbf{Scheduler}, because it's the shared data mechanism that Android prov
 \item Processes and Threads
 
 We will evaluate Processes and Threads directly.
-They're not only our targets of testing,but also the mechanisms we are going to use in our experiment.
+They're not only our targets of testing, but also the mechanisms that we are going to use in our experiments.
 \end{itemize}
 
 \section{Intents/Receivers}
@@ -78,22 +77,22 @@ They're not only our targets of testing,but also the mechanisms we are going to 
 Although directly evaluating intents and receivers on
 single process deosn't make sense,
 it can provide a \textbf{baseline for our experiments}.
-We can compare the different results from the same experiment applied on single process
+We can compare the different results from the same experiment that is applied to single process
 and multiple processes;
 and we will analyze the different behaviors and try to reason about them.
 
 \subsection{Multiple Processes}
 \label{sec-3-2}
-We plan to use process(es) to generate bunch of intents, then use different
-process(es) to receive the intents.
-In addition, there're always background process(es) working on some computations
-to produce the pressure on Android system.
+We plan to use processes to generate a bunch of intents, then use different
+processes to receive the intents.
+In addition, there are always background processes working on some computations
+to produce different pressures on the Android system.
 This way we can observe the order and time of the intent delivery.
-It can also provide some pressure on \textbf{Garbage Collector}, \textbf{Synchronization}, and \textbf{Scheduler}.
+These background working processes can also provide some observable pressure on \textbf{Garbage Collector}, \textbf{Synchronization}, and \textbf{Scheduler}.
 
 \subsubsection{Garbage Collector}
 \label{sec-3-2-1}
-We can use one sender and one receiver to test upon Garbage Collector.
+We can use one sender and one receiver to test the Garbage Collector.
 We would like to evaluate how garbage collector works:
 \begin{itemize}
 \item frequency of grabage collection and memory pressure
@@ -110,14 +109,14 @@ short live time & X & X & X\\
 \end{tabular}
 \end{center}
 
-The key here is we need to generate pressure.
-To evalute the behavior of Android system, it needs some pressure on
+The key here is we need to generate pressures.
+To evaluate the behavior of Android system, it needs some pressure on
 different components so that we can infer the predictability of different
-components and the interaction between different components.
+components and the interaction between them.
 We think the pressure can come from:
 
 \begin{itemize}
-\item Other background process(es) with computation
+\item Other background processes with computation
 \item Computation inside senders
 \item Computation inside receivers
 \end{itemize}
@@ -127,27 +126,27 @@ We will divide our experiments into three phases:
 Phase 1. we only have pressure created from background process(es).
 It's easier to implement and tune for different \hyperref[Memory-Pressure-Types]{memory pressure types}.
 
-Phase 2. we'll add additional computation on senders and receivers so that we can compare
-whether computation source affects Android's performance.
+Phase 2. we'll burden additional computations on senders and receivers so that we can compare
+whether the computation sources affects Android's performance.
 
-Phase 3. we combine the different pressure together to get the final evaluation.
+Phase 3. we take into consideration the combination of the different pressures in our final evaluation.
 
-The work of computation can be the task from SPECjvm2008 (Java Virtual Machine Benchmark) or DaCapo Benchmark.
-In addition, we can assoicate the \hyperref[Parcelable/Serializable]{Parcelable vs. Serializable} with experiment phase 3.
+The computation can be the benchmarks from SPECjvm2008 or DaCapo benchmark suites.
+Also, we can assoicate the \hyperref[Parcelable/Serializable]{Parcelable vs. Serializable} with phase 3 of the experiments.
 
 \subsubsection{Synchronization}
 \label{sec-3-2-2}
-This task needs to get other Android components involved.
+This task needs to involve other Android components.
 The reason is that we can not just pass an object as an extra intent, we need to serialize the object first.
-More difficult yet, there is no directly synchronized mechanism between sender and receiver.
-we are planning on passing some metadata to let receivers use something synchronization required, for example, \textbf{Content Provider}. We'll discuss this in more detail in the next section.
+More difficultly, there is no directly synchronized mechanism between the sender and receiver.
+We are planning on passing some metadata to allow receivers to do some synchronization, for example, \textbf{Content Provider}. We will discuss this in more detail in the next section.
 
 \subsubsection{Scheduler}
 \label{sec-3-2-3}
-We can use multiple background processes to provide the pressure on scheduler.
-Next, we use the order of intent delivery to evaluate the scheduler and intent delivery mechanism. More on topic are discusses in Section \hyperref[Processes/Threads]{Processes/Threads}.
+We can use multiple background processes to provide pressure on the scheduler.
+And next, we will use the order of the intent delivery to evaluate the scheduler and intent delivery mechanism. More on this topic is discussed in Section \hyperref[Processes/Threads]{Processes/Threads}.
 
-\section{Content Providers}
+\section{Content Provider}
 \label{sec-4}
 Content provider is an Android system's mechanism to manage access to a central repository of data.
 However, Android system does not synchronize access to the Content Provider.
