@@ -1,4 +1,4 @@
-% Created 2015-03-13 Fri 16:21
+% Created 2015-03-13 Fri 17:19
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -33,7 +33,7 @@
 
 \section{Introduction}
 \label{sec-1}
-Android is a mobile operating system based on the Linux kernel and is developed by Google. Along with the popularity of smartphones, 3G devices, and other advanced mobile applications around 2009, Android has been standing out in the so-called “smart wars” with its counterpart such as Apple iOS and Windows, for its being a ready-made, low-cost, and customizable operating system (OS). According to Strategy Analytics’ latest report (2014), Android is getting dangerously close to worldwide domination with a record 80\% of all smartphone running the mobile OS. What’s more, Android has gone a step further – it’s the main driver behind the continuing climb of the smartphone industry; Android now accounts for an impressive 8 in 10 of all smartphones shipped on the planet.
+Android is a mobile operating system based on the Linux kernel and is developed by Google. Along with the popularity of smartphones, 3G devices, and other advanced mobile applications around 2009, Android has been standing out in the so-called “smart wars” with its counterpart such as Apple iOS and Windows, for its being a ready-made, low-cost, and customizable operating system (OS). According to Strategy Analytics’ latest report (2014), Android is getting dangerously close to worldwide domination with a record 80\% of all smartphone running the mobile OS. What’s more, Android has gone a step further – it’s the main driver behind the continuing climb of the smartphone industry; Android now accounts for an impressive 8 in 10 of all smartphones shipped on the planet\footnote{\url{http://bgr.com/2014/07/01/android-market-share-2014/}}.
 
 Enjoying such a big fat market share, Android facilitates its rapid deployment in many domains. Android was originally designed to be used in mobile computing applications, from handsets to tablets to e-books. But developers are also looking to employ Android in a variety of other embedded systems that have traditionally relied on the benefits of true real-time operating systems. What makes an operating system real-time is that on the top of functioning correctly, its ability to meet deadlines. Time constraints for system performance are critical to such real-time embedded systems that mandate response to stimuli within pre-specified real-time design specifications. Reliability consideration of utilizing a system as real time OS requires a detailed evaluation of the ability of this system to meet these specifications, in other words, to be predictable.
 
@@ -178,7 +178,7 @@ For example, we can evaluate how many processes can run without lots of them mis
 \label{sec-5}
 As we move forward with our project, we will be concerned with computational limitations in regards to memory, threads, and processes.  We would especially like to understand how the Android system responds and performs as we approach the limits so that we can obtain a comprehensive set of data about this performance.  Before discussing the benchmarks that we will be running to obtain this data, we have to explore some basic information on how the Android System manages processes and threads.
 
-There are some Android specific behaviours related to processes and threads.  For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts to back up when the user is again interacting with the component.
+There are some Android specific behaviours related to processes and threads\footnote{All of the specifc info on Android’s system came from the Android Developers Guide found here: \url{http://developer.android.com/guide/components/processes-and-threads.html}}. For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts to back up when the user is again interacting with the component.
 
 As a result, processes will be killed according to the following rules.
 
@@ -193,7 +193,7 @@ A thread is launched when an application starts.  This thread is often called th
 
 In our project, we won’t be too concerned with the application life cycle, the UI thread, components, and app related services.  We will be more concerned with worker threads and computation done below the UI and service level.  Since worker threads are often killed as a result of runtime configuration changes that result from user interactions, we will need to fix our runtime configuration and execute our application in a fixed environment where user interaction is limited or none.
 
-Now, we are ready to discuss the benchmarks that we will be testing in Android.  We were able to find some data on thread density for the the Dacapo benchmarks.  From this data, it appears that the benchmarks avrora$_{\text{9}}$, hsqldb$_{\text{6}}$, lusearch$_{\text{6}}$, and eclispe$_{\text{9}}$ all spawn off a lot of threads and will provide us with interesting and valuable data.
+Now, we are ready to discuss the benchmarks that we will be testing in Android.  We were able to find some data on thread density for the the Dacapo benchmarks\footnote{Dacapo Benchmark Thread Density Data: \url{http://www.mm-net.org.uk/workshop230412/kalibera.pdf}}.  From this data, it appears that the benchmarks avrora$_{\text{9}}$, hsqldb$_{\text{6}}$, lusearch$_{\text{6}}$, and eclispe$_{\text{9}}$ all spawn off a lot of threads and will provide us with interesting and valuable data.
 
 \begin{itemize}
 \item avrora simulates the evaluation of programs on a grid of microcontrollers
@@ -202,7 +202,7 @@ Now, we are ready to discuss the benchmarks that we will be testing in Android. 
 \item eclipse runs peformance tests related to the Eclipse IDE
 \end{itemize}
 
-Also, we will investigate thread usage for the SPEC benchmarks such as compiler, compress, and crypto.  We’ve found some relevant data on the 2015 SPECjvm2008 SPEC Summary Report.
+Also, we will investigate thread usage for the SPEC benchmarks such as compiler, compress, and crypto.  We’ve found some relevant data on the 2015 SPECjvm2008 SPEC Summary Report\footnote{SPECjvm2008 SPEC Summary Report: \url{https://www.spec.org/jvm2008/results/res2015q1/jvm2008-20150120-00018.base/SPECjvm2008.base.html}}.
 
 In addition to these benchmarks, if we decide to further explore Android Services and Android thread management at a higher level, then we will look into bound services and interprocessor communication using remote procedure calls.
 

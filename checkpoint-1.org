@@ -3,9 +3,10 @@
 
 #+LATEX_HEADER: \usepackage{fullpage}
 #+LATEX_HEADER: \usepackage{fullpage}
+#+STARTUP: nofninline
 
 * Introduction
-  Android is a mobile operating system based on the Linux kernel and is developed by Google. Along with the popularity of smartphones, 3G devices, and other advanced mobile applications around 2009, Android has been standing out in the so-called “smart wars” with its counterpart such as Apple iOS and Windows, for its being a ready-made, low-cost, and customizable operating system (OS). According to Strategy Analytics’ latest report (2014), Android is getting dangerously close to worldwide domination with a record 80% of all smartphone running the mobile OS. What’s more, Android has gone a step further – it’s the main driver behind the continuing climb of the smartphone industry; Android now accounts for an impressive 8 in 10 of all smartphones shipped on the planet.
+  Android is a mobile operating system based on the Linux kernel and is developed by Google. Along with the popularity of smartphones, 3G devices, and other advanced mobile applications around 2009, Android has been standing out in the so-called “smart wars” with its counterpart such as Apple iOS and Windows, for its being a ready-made, low-cost, and customizable operating system (OS). According to Strategy Analytics’ latest report (2014), Android is getting dangerously close to worldwide domination with a record 80% of all smartphone running the mobile OS. What’s more, Android has gone a step further – it’s the main driver behind the continuing climb of the smartphone industry; Android now accounts for an impressive 8 in 10 of all smartphones shipped on the planet[fn:1].
 
   Enjoying such a big fat market share, Android facilitates its rapid deployment in many domains. Android was originally designed to be used in mobile computing applications, from handsets to tablets to e-books. But developers are also looking to employ Android in a variety of other embedded systems that have traditionally relied on the benefits of true real-time operating systems. What makes an operating system real-time is that on the top of functioning correctly, its ability to meet deadlines. Time constraints for system performance are critical to such real-time embedded systems that mandate response to stimuli within pre-specified real-time design specifications. Reliability consideration of utilizing a system as real time OS requires a detailed evaluation of the ability of this system to meet these specifications, in other words, to be predictable.
 
@@ -127,7 +128,7 @@
 * <<Processes/Threads>>Processes/Threads
   As we move forward with our project, we will be concerned with computational limitations in regards to memory, threads, and processes.  We would especially like to understand how the Android system responds and performs as we approach the limits so that we can obtain a comprehensive set of data about this performance.  Before discussing the benchmarks that we will be running to obtain this data, we have to explore some basic information on how the Android System manages processes and threads.
 
-  There are some Android specific behaviours related to processes and threads.  For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts to back up when the user is again interacting with the component.
+  There are some Android specific behaviours related to processes and threads[fn:android_guide]. For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts to back up when the user is again interacting with the component.
 
   As a result, processes will be killed according to the following rules.
 
@@ -140,14 +141,14 @@
 
   In our project, we won’t be too concerned with the application life cycle, the UI thread, components, and app related services.  We will be more concerned with worker threads and computation done below the UI and service level.  Since worker threads are often killed as a result of runtime configuration changes that result from user interactions, we will need to fix our runtime configuration and execute our application in a fixed environment where user interaction is limited or none.
 
-  Now, we are ready to discuss the benchmarks that we will be testing in Android.  We were able to find some data on thread density for the the Dacapo benchmarks.  From this data, it appears that the benchmarks avrora_9, hsqldb_6, lusearch_6, and eclispe_9 all spawn off a lot of threads and will provide us with interesting and valuable data.
+  Now, we are ready to discuss the benchmarks that we will be testing in Android.  We were able to find some data on thread density for the the Dacapo benchmarks[fn:dacapo].  From this data, it appears that the benchmarks avrora_9, hsqldb_6, lusearch_6, and eclispe_9 all spawn off a lot of threads and will provide us with interesting and valuable data.
 
   - avrora simulates the evaluation of programs on a grid of microcontrollers
   - hsqldb has been replaced by h2 which simulates a model of banking with many transactions
   - lusearch searches for keywords among a collection of large texts
   - eclipse runs peformance tests related to the Eclipse IDE
 
-  Also, we will investigate thread usage for the SPEC benchmarks such as compiler, compress, and crypto.  We’ve found some relevant data on the 2015 SPECjvm2008 SPEC Summary Report.
+  Also, we will investigate thread usage for the SPEC benchmarks such as compiler, compress, and crypto.  We’ve found some relevant data on the 2015 SPECjvm2008 SPEC Summary Report[fn:spec].
 
   In addition to these benchmarks, if we decide to further explore Android Services and Android thread management at a higher level, then we will look into bound services and interprocessor communication using remote procedure calls.
 
@@ -186,3 +187,12 @@
   In conclude, the parcelable and serializable mechanisms are methods to provide pressure on Android system.
   In the meantime, we can evalute the performance of them.
   The result may improve static code analysis of Andorid codes.
+
+
+[fn:1] http://bgr.com/2014/07/01/android-market-share-2014/
+
+[fn:android_guide] All of the specifc info on Android’s system came from the Android Developers Guide found here: http://developer.android.com/guide/components/processes-and-threads.html
+
+[fn:dacapo] Dacapo Benchmark Thread Density Data: http://www.mm-net.org.uk/workshop230412/kalibera.pdf
+
+[fn:spec] SPECjvm2008 SPEC Summary Report: https://www.spec.org/jvm2008/results/res2015q1/jvm2008-20150120-00018.base/SPECjvm2008.base.html
