@@ -14,49 +14,50 @@
 * Android Components
   - Intents and Intent Filters (receivers)
 
-    We will evaluate intent delivery mechanism of Android.
-    The intents will appear for almost all multiple processes experiments.
+    We will evaluate the Intent delivery mechanism of Android.
+    The Intents will be used for almost all the multiple processes experiments.
 
   - Activities and App Widgets
 
-    We will not directly evaluate activities and app widgets because they're only related with UI,
-    it's hard to produce convincible result because there're too many elements out of control,
-    like the GPU power, the screen resolution.
+    We will not directly evaluate the Activities and App Widgets because they're only related with UI.
+    it's hard to produce convincing result as there are too many elements that can be out of control,
+    e.g. the GPU power and the screen resolution.
 
   - Services
 
-    We will not directly evalute services as well. The reason is same as activities.
+    We will not directly evalute Services as well. The reason is the same as we cannot do with Activities.
+
   - Content Providers
 
-    We will evalute content providers related *Garbage Collector*, *Synchronization*,
-    and *Scheduler*. Because it's shared data mechanism Android provied.
+    We will evalute the Content Providers that are related to *Garbage Collector*, *Synchronization*,
+    and *Scheduler*, because it's the shared data mechanism that Android provides.
 
 
   - Processes and Threads
 
-    We will evaluate processes and threads directly.
-    They're both our targets and mechanisms to use.
+    We will evaluate Processes and Threads directly.
+    They're not only our targets of testing,but also the mechanisms we are going to use in our experiment.
 
 * Intents/Receivers
 ** Single Process
-   To directly evaluate intents and receivers on
-   single process deosn't make sense.
-   But this can provide *baseline for our experiments*.
-   We can compare the results of same experiment on single process
-   and multiple processes.
-   Then we can get reasoning of different behaviour.
+   Although directly evaluating intents and receivers on
+   single process deosn't make sense,
+   it can provide a *baseline for our experiments*.
+   We can compare the different results from the same experiment applied on single process
+   and multiple processes;
+   and we will analyze the different behaviors and try to reason about them.
 
 ** Multiple Processes
-   We can use process(es) to generate bunch of intents, then use other
+   We plan to use process(es) to generate bunch of intents, then use different
    process(es) to receive the intents.
-   In addition, there're always background process(es) with some computation
-   to produce pressure for Android system.
-   So we can evaluate the order and time of intent delivery.
-   It can provide some pressure for *Garbage Collector*, *Synchronization*, and *Scheduler*.
+   In addition, there're always background process(es) working on some computations
+   to produce the pressure on Android system.
+   This way we can observe the order and time of the intent delivery.
+   It can also provide some pressure on *Garbage Collector*, *Synchronization*, and *Scheduler*.
 
 *** Garbage Collector
-    We can use one sender and one receiver to test Garbage Collector,
-    So we can evaluate how garbage collector works:
+    We can use one sender and one receiver to test upon Garbage Collector.
+    We would like to evaluate how garbage collector works:
     - frequency of grabage collection and memory pressure
     - running time of grabage collection and memory pressure
 
@@ -67,11 +68,11 @@
     | long live time  | X           | X              | X             |
     | short live time | X           | X              | X             |
 
-    So where pressure come from?
-    To evalute the behavior of Android system, it need some pressure for
-    different components. So that we can infer the predictability of different
-    conponents, and the interaction between different components.
-    The pressure can come from:
+    The key here is we need to generate pressure.
+    To evalute the behavior of Android system, it needs some pressure on
+    different components so that we can infer the predictability of different
+    components and the interaction between different components.
+    We think the pressure can come from:
 
     - Other background process(es) with computation
     - Computation inside senders
@@ -79,63 +80,63 @@
 
     We will divide our experiments into three phases:
 
-    Phase 1. we only have pressure from background process(es).
+    Phase 1. we only have pressure created from background process(es).
     It's easier to implement and tune for different [[Memory Pressure Types][memory pressure types]].
 
-    Phase 2. we'll add additional computation to senders and receivers to compare
-    whether computation source affect Android's performance.
+    Phase 2. we'll add additional computation on senders and receivers so that we can compare
+    whether computation source affects Android's performance.
 
-    Phase 3. we combined the different pressure together to get final evaluation.
+    Phase 3. we combine the different pressure together to get the final evaluation.
 
-    The computation can be the task from SPECjvm2008 (Java Virtual Machine Benchmark) or DaCapo Benchmark.
+    The work of computation can be the task from SPECjvm2008 (Java Virtual Machine Benchmark) or DaCapo Benchmark.
     In addition, we can assoicate the [[Parcelable/Serializable][Parcelable vs. Serializable]] with experiment phase 3.
 
 *** Synchronization
-    This task need other Android components.
-    Because we can not pass an object as extra of an intent, we need serialize the object first.
-    So there no directly synchronized mechanism between sender and receiver,
-    but we can pass some metadata to let receivers use something need synchronization like *Content Provider*. We'll discuss in next section.
+    This task needs to get other Android components involved.
+    The reason is that we can not just pass an object as an extra intent, we need to serialize the object first.
+    More difficult yet, there is no directly synchronized mechanism between sender and receiver.
+    we are planning on passing some metadata to let receivers use something synchronization required, for example, *Content Provider*. We'll discuss this in more detail in the next section.
 
 *** Scheduler
-    We can use multiple background processes to provide pressure for scheduler.
-    Then we use the order of intent delivery to evaluate scheduler and intent delivery mechanism. More details can be found in Section [[Processes/Threads][Processes/Threads]].
+    We can use multiple background processes to provide the pressure on scheduler.
+    Next, we use the order of intent delivery to evaluate the scheduler and intent delivery mechanism. More on topic are discusses in Section [[Processes/Threads][Processes/Threads]].
 
 * Content Providers
   Content provider is an Android system's mechanism to manage access to a central repository of data.
-  But Android system does not synchronize access to the Content Provider.
-  So we must implement thread-safe for accessing content providers.
-  One way is using synchronized. We will figure out whether there exist other synchronization mechanism.
+  However, Android system does not synchronize access to the Content Provider.
+  So we must implement in a thread-safe way for accessing content providers.
+  One method is to use synchronization. Normally, We are able to figure out whether or not there exists other synchronization mechanism.
 
-  But it provides use cases to test synchronization in Android. We can use different processes to access one content provider.
+  But Android provides use cases to test synchronization. We can use different processes to access one content provider.
   Then we can evaluate the performance of synchronization in Android.
 
   The experiments should contains *single process* as baseline and *multiple processes*.
-  Every process access the content provider for a fixed times with a fixed interval, then record the finish time.
-  We can gradually increase the number of processes to compare the results.
+  Every process accesses the content provider for a fixed times with a fixed interval, then the finish time is recorde.
+  We plan to gradually increase the number of processes to compare the results
 
-  So our experiments should have such configurable elements:
+  So our experiments should have such configurable elements as following:
 
 |   | Process Number                        | Times to Access Content Provider | Interval |
 |---+---------------------------------------+----------------------------------+----------|
 | / |                                       | <                                | <        |
 |   | How many processes run simultaneously | The fixed num                    | Interval |
 
-  Apparently, we can evaluate the scheduler in the meantime.
-  For example, how many processes can run without lots of them missing deadline.
+  Obviously, we can evaluate the scheduler  at the same time.
+  For example, we can evaluate how many processes can run without lots of them missing deadline.
 
 * <<Processes/Threads>>Processes/Threads
-  As we move forward with our project, we will be concerned with computational limitations in regards to memory, threads, and processes.  We would especially like to understand how the Android system responds and performs as we approach the limits and obtain comprehensive data on this performance.  Before discussing the benchmarks that we will be running to obtain this data, we have to explore some basic information on how the Android System manages processes and threads.
+  As we move forward with our project, we will be concerned with computational limitations in regards to memory, threads, and processes.  We would especially like to understand how the Android system responds and performs as we approach the limits so that we can obtain a comprehensive set of data about this performance.  Before discussing the benchmarks that we will be running to obtain this data, we have to explore some basic information on how the Android System manages processes and threads.
 
-  There is some Android specific behaviour related to processes and threads.  For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts back up when the user is again interacting with the component.
+  There are some Android specific behaviours related to processes and threads.  For example, each component is associated with one or many processes.  When memory is low some processes are killed.  Preference is given to components that the user is currently interacting with.  When a process is killed, it starts to back up when the user is again interacting with the component.
 
   As a result, processes will be killed according to the following rules.
 
   - Foreground processes are only killed as a last resort.
-  - Any process that affects what the user is currently seeing will generally not be killed as well.
+  - Any process that affects what the user is currently working on will generally not be killed as well.
   - Service processes may be killed if necessary.
   - Background and empty processes are often killed first.
 
-  A thread is launched when an application starts.  This thread is often called the UI thread (or the main thread).  All components within that app will be instantiated within the UI thread.  Applications are vulnerable to performance issues when large computations are a result of user interaction because the application’s UI thread will take on the task of handling these computations rather than handle simple UI tasks for a smooth user experience.  In response to this vulnerability, Android has two principles to protect the user experience.  Don’t assign too much work to the UI thread and don’t let other threads update the UI.  So to handle large computations as a result of user interaction one should spawn off worker threads.
+  A thread is launched when an application starts.  This thread is often called the UI thread (or the main thread).  All components within that app will be instantiated within the UI thread.  Applications are vulnerable to performance issues when large computations are a result of user interaction, because the application’s UI thread will take on the task of handling these computations rather than handle simple UI tasks for a smooth user experience.  In response to this vulnerability, Android has two principles to protect the user experience.  One is don not assign too much work to the UI thread and another one is don not let other threads update the UI.  So to handle large computations as a result of user interaction, one should spawn off worker threads.
 
   In our project, we won’t be too concerned with the application life cycle, the UI thread, components, and app related services.  We will be more concerned with worker threads and computation done below the UI and service level.  Since worker threads are often killed as a result of runtime configuration changes that result from user interactions, we will need to fix our runtime configuration and execute our application in a fixed environment where user interaction is limited or none.
 
@@ -151,30 +152,30 @@
   In addition to these benchmarks, if we decide to further explore Android Services and Android thread management at a higher level, then we will look into bound services and interprocessor communication using remote procedure calls.
 
 * AlarmManager and Handler
-  There're two ways to schedule something in Android:
+  There're two ways to schedule works in Android:
 
   - AlarmManager
   - Handler
 
-  Don't miss deadline for certain task is a critical factor for real-time system.
+  Not missing the deadline for certain task is a critical factor for real-time system.
   So we'll evalute the two approaches respectively.
-  But because the functionality is same.
-  So we call them scheduled tasks.
-  To evaluate how well Android handle scheduled tasks.
-  We can create lots of threads/processes with light computation run simultaneously,
-  then to evalute how many times they miss deadline.
+  But because these two approches have the same functionality,
+  we call them as one name -- scheduled tasks.
+  To evaluate how well Android handle scheduled tasks,
+  We can create lots of threads/processes with light computation running simultaneously,
+  then we evaluate how many times they miss deadline.
 
-  Based on the two hypotheses:
+  Based on the two hypotheses that
   - the number of threads/processes affect performance of scheduler
   - the workload for each tasks affect performance of scheduler
 
   We configure our experiments as follows:
   1. only use light workload for lots of threads/processes
-  2. use configurable workload for fixed number of threads/processes to evalute how workload affect scheduler
+  2. use configurable workload for fixed number of threads/processes to evalute how workload affects the scheduler
 
 * <<Parcelable/Serializable>>Parcelable/Serializable
-  According to this [[http://www.developerphil.com/parcelable-vs-serializable/][blog]], parcelable mechanism have 10 times better performance than serializable mechanism.
-  But parcelable need developers to implement writeToParcel and createFromParcel manually.
+  According to this reference [[http://www.developerphil.com/parcelable-vs-serializable/][blog]], parcelable mechanism have 10 times better performance than serializable mechanism.
+  But parcelable needs developers to implement writeToParcel and createFromParcel manually.
   So parcelable can save the overhead to iterate all fields of object.
   But we can compare the two mechanisms by how much pressure they generate to garbage collector.
 
@@ -182,6 +183,6 @@
   then we compare the different behaviors of garbage collector.
   It's possible to evaluate scheduler as well.
 
-  In conclude, the parcelable and serializable mechanisms are methods to provide pressure for Android system.
+  In conclude, the parcelable and serializable mechanisms are methods to provide pressure on Android system.
   In the meantime, we can evalute the performance of them.
   The result may improve static code analysis of Andorid codes.
