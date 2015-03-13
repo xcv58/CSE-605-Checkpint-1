@@ -26,18 +26,17 @@
 
   - Services
 
-    We will not directly evalute Services as well. The reason is the same as we cannot do with Activities.
+    We will not directly evalute Services as well. The reason is the same as why we cannot directly evaluate Activities.
 
   - Content Providers
 
-    We will evalute the Content Providers that are related to *Garbage Collector*, *Synchronization*,
-    and *Scheduler*, because it's the shared data mechanism that Android provides.
-
-
+    We will evaluate the *Garbage Collector*, *Synchronization*, and *Scheduler* by means of the Content Provider, because we can make use of the shared data mechanism that Android provides.
+    
+    
   - Processes and Threads
 
     We will evaluate Processes and Threads directly.
-    They're not only our targets of testing,but also the mechanisms we are going to use in our experiment.
+    They're not only our targets of testing, but also the mechanisms that we are going to use in our experiments.
 
 * Intents/Receivers
 ** Single Process
